@@ -41,9 +41,10 @@
       </a-col>
     </a-row>
     <div :class="`${prefixCls}-bottom`">
+      <div>{{ _refs.length }}</div>
       <Tabs>
         <template v-for="item in achieveList" :key="item.key">
-          <TabPane :tab="item.name">
+          <TabPane :tab="item.name" :ref="_refs.set">
             <component :is="item.component" />
           </TabPane>
         </template>
@@ -65,6 +66,8 @@
   import { tags, teams, details, achieveList } from './data';
   import { useUserStore } from '/@/store/modules/user';
 
+  import { useTemplateRefsList } from '@vueuse/core';
+
   export default defineComponent({
     components: {
       CollapseContainer,
@@ -79,6 +82,7 @@
       [Col.name]: Col,
     },
     setup() {
+      const _refs = useTemplateRefsList();
       const userStore = useUserStore();
       const avatar = computed(() => userStore.getUserInfo.avatar || headerImg);
       return {
